@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 author 'raymans'
-description 'Advanced Dynamic HUD for QBCore Framework'
+description 'HUD for QBCore/Qbox Framework'
 version '1.0.0'
 
 ui_page 'ui.html'
