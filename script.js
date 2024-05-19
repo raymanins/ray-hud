@@ -1,13 +1,13 @@
 window.addEventListener('message', function(event) {
     const data = event.data;
-    
+
     if (data.action === 'update_hud') {
         updateBar('health', data.health);
         updateBar('armor', data.armor);
         updateBar('food', data.food);
         updateBar('water', data.water);
         updateBar('fuel', data.fuel);
-        
+
         document.getElementById('speed-value').innerText = data.speed;
 
         const seatbeltElement = document.getElementById('seatbelt');
@@ -22,22 +22,30 @@ window.addEventListener('message', function(event) {
         const topHud = document.getElementById('top-hud');
         if (data.speed > 0 || data.fuel > 0 || data.seatbelt) {
             topHud.style.display = 'flex';
+            document.body.classList.add('show-minimap'); // Add class to show minimap border
         } else {
             topHud.style.display = 'none';
+            document.body.classList.remove('show-minimap'); // Remove class to hide minimap border
         }
     } else if (data.action === 'toggle_hud') {
-        document.getElementById('hud').style.display = data.enabled ? 'flex' : 'none';
+        document.getElementById('hud').style.display = data.enabled ? 'block' : 'none';
+    } else if (data.action === 'show_hud') {
+        document.getElementById('hud').style.display = data.enabled ? 'block' : 'none';
     }
 });
 
-
-function updateBar(id, value) {
-    const bar = document.getElementById(`${id}-fill`);
+function updateBar(type, value) {
+    const bar = document.getElementById(`${type}-fill`);
     const percentage = value / 100;
-    if (percentage === 0) {
+    if (percentage <= 0) {
         bar.classList.add('zero');
     } else {
         bar.classList.remove('zero');
     }
     bar.style.height = `${percentage * 100}%`;
 }
+
+// Ensure the HUD is initially hidden
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('hud').style.display = 'none';
+});
