@@ -11,19 +11,6 @@ local HUD = {
     seatbelt = false
 }
 
--- Function to hide health and armor bars under the minimap
-local function hideDefaultHud()
-    local ped = PlayerPedId()
-    local vehicle = GetVehiclePedIsIn(ped, false)
-    if IsPedInAnyVehicle(ped, false) then
-        DisplayRadar(true)
-        DisplayHud(false)
-    else
-        DisplayRadar(false)
-        DisplayHud(true)
-    end
-end
-
 -- Function to update HUD values
 local function updateHUD()
     if not HUD.enabled then return end
@@ -45,16 +32,18 @@ local function updateHUD()
         HUD.speed = math.floor(GetEntitySpeed(vehicle) * 3.6) -- Speed in km/h
         HUD.fuel = math.floor(GetVehicleFuelLevel(vehicle))
         HUD.seatbelt = LocalPlayer.state.seatbelt
-        
+
         -- Show the minimap and hide default health/armor
-        hideDefaultHud()
+        DisplayRadar(true)
+        DisplayHud(false)
     else
         HUD.speed = 0
         HUD.fuel = 0
         HUD.seatbelt = false
         
         -- Hide the minimap and show default health/armor
-        hideDefaultHud()
+        DisplayRadar(false)
+        DisplayHud(true)
     end
 
     SendNUIMessage({
@@ -68,6 +57,35 @@ local function updateHUD()
         seatbelt = HUD.seatbelt
     })
 end
+
+-- Ensure HUD is hidden initially and only shown when player is loaded
+AddEventHandler('onResourceStart', function(resourceName)
+    if GetCurrentResourceName() == resourceName then
+        -- Explicitly set HUD to be hidden
+        HUD.enabled = false
+        SendNUIMessage({
+            action = "show_hud",
+            enabled = HUD.enabled
+        })
+        print("Resource started, hiding HUD")
+
+        -- Initially hide minimap
+        DisplayRadar(false)
+        DisplayHud(true)
+    end
+end)
+
+-- Handle resource stop to hide the HUD
+AddEventHandler('onResourceStop', function(resourceName)
+    if GetCurrentResourceName() == resourceName then
+        HUD.enabled = false
+        SendNUIMessage({
+            action = "show_hud",
+            enabled = HUD.enabled
+        })
+        print("Resource stopped, hiding HUD")
+    end
+end)
 
 Citizen.CreateThread(function()
     while true do
@@ -102,29 +120,4 @@ RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
         enabled = HUD.enabled
     })
     print("Player unloaded, hiding HUD")
-end)
-
--- Ensure HUD is hidden initially and only shown when player is loaded
-AddEventHandler('onResourceStart', function(resourceName)
-    if GetCurrentResourceName() == resourceName then
-        -- Explicitly set HUD to be hidden
-        HUD.enabled = false
-        SendNUIMessage({
-            action = "show_hud",
-            enabled = HUD.enabled
-        })
-        print("Resource started, hiding HUD")
-    end
-end)
-
--- Handle resource stop to hide the HUD
-AddEventHandler('onResourceStop', function(resourceName)
-    if GetCurrentResourceName() == resourceName then
-        HUD.enabled = false
-        SendNUIMessage({
-            action = "show_hud",
-            enabled = HUD.enabled
-        })
-        print("Resource stopped, hiding HUD")
-    end
 end)
