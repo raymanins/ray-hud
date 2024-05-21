@@ -14,7 +14,7 @@ files {
 }
 
 client_scripts {
-    'main.lua'
+    'main.lua',
     'minimap.lua'
 }
 

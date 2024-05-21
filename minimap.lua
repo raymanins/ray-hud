@@ -116,28 +116,14 @@ Citizen.CreateThread(function()
 end)
 
 Citizen.CreateThread(function()
-    MinimapScaleform.scaleform = RequestScaleformMovie("minimap")
+    local minimap = RequestScaleformMovie("minimap")
     SetRadarBigmapEnabled(true, false)
     Wait(0)
     SetRadarBigmapEnabled(false, false)
-    
     while true do
-        Citizen.Wait(0)
-        
-        local ped = PlayerPedId()
-        local vehicle = GetVehiclePedIsIn(ped, false)
-        
-        -- Check if the player is in a vehicle
-        if IsPedInAnyVehicle(ped, false) then
-            -- Only display minimap when in a vehicle
-            BeginScaleformMovieMethod(MinimapScaleform.scaleform, "SETUP_HEALTH_ARMOUR")
-            ScaleformMovieMethodAddParamInt(3)
-            EndScaleformMovieMethod()
-        else
-            -- Hide minimap when not in a vehicle
-            BeginScaleformMovieMethod(MinimapScaleform.scaleform, "SETUP_HEALTH_ARMOUR")
-            ScaleformMovieMethodAddParamInt(0)
-            EndScaleformMovieMethod()
-        end
+        Wait(0)
+        BeginScaleformMovieMethod(minimap, "SETUP_HEALTH_ARMOUR")
+        ScaleformMovieMethodAddParamInt(3)
+        EndScaleformMovieMethod()
     end
 end)

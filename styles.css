@@ -7,7 +7,7 @@ body {
 
 #hud {
     position: absolute;
-    bottom: 10px; 
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -27,7 +27,7 @@ body {
     height: 34px;
     overflow: hidden;
     border-radius: 8px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    border: 3px solid rgb(125, 125, 125);
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
@@ -35,13 +35,17 @@ body {
 }
 
 #speed {
-    width: auto;
+    width: 78px; /* Adjusted to match the width of two squares */
     padding: 0 10px;
     border: none;
     background: rgba(0, 0, 0, 0.7);
     color: white;
     font-size: 1.2em;
     border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -4px; /* Shift the speed background 3px to the left */
 }
 
 #speed span {
@@ -64,15 +68,15 @@ body {
 }
 
 #health .hud-fill {
-    background-color: #4CAF50;
+    background-color: #E80000;
 }
 
 #armor .hud-fill {
-    background-color: #929292;
+    background-color: #195c84;
 }
 
 #food .hud-fill {
-    background-color: #FFC107;
+    background-color: #E28401;
 }
 
 #water .hud-fill {
@@ -80,7 +84,7 @@ body {
 }
 
 #fuel .hud-fill {
-    background-color: #FF9800;
+    background-color: #8d5609;
 }
 
 .hud-fill.zero {
@@ -105,4 +109,13 @@ body {
 
 #seatbelt, #fuel {
     transform: scale(0.8); /* Adjust the scale factor as needed */
+}
+
+#fuel {
+    margin-left: -4px; /* Adjust this value to move the fuel element to the left */
+}
+
+/* Add styles to show or hide the minimap */
+.show-minimap #minimap-container {
+    display: block;
 }
